@@ -1,0 +1,17 @@
+{
+  "development":{
+    "database": "school",
+    "username": "mr.kk",
+    "password": "7728",
+    "dialectInformation":{
+      "dialect": "mysql",
+      "host": "localhost"
+    },
+    "pool":{
+      "max":3,
+      "min": 0,
+      "acquire": 20000, //time in ms,
+      "idle": 10000
+    }
+  }
+}
