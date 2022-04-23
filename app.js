@@ -1,25 +1,27 @@
 const express = require('express');
 const app = express();
-const Sequelize = require('sequelize');
-const dbConfig = require('./config/config.json');
+
 const serverConfig = require('./config/config')
 
-const env = "development";
-const dbSettings = dbConfig[env];
-const sequelize = new Sequelize(
-  dbSettings.database,
-  dbSettings.username,
-  dbSettings.password,
-  dbSettings.dialectInformation
-);
+const db = require('./models')
 
-app.listen(serverConfig.PORT, async ()=>{
+let categoriesData = [
+  {name: "Electronic",
+  description: "This category contains electronic applieances"},
+  {name: "vegitables",
+  description: "This category contains greens"}
+]
+
+db.Category.bulkCreate(categoriesData).then(()=>{
+  console.log("category table is initializing with category data")
+}).catch((err)=>{
+  console.log("Error in initializing categories table", err)
+})
+
+db.sequelize.sync({force: true}).then(()=>{
+  console.log('models/tables are dropped and recreated');
+})
+
+app.listen(serverConfig.PORT, ()=>{
   console.log("server is running on port 3000");
-  try{
-    await sequelize.authenticate();
-    console.log("connected to db")
-  }
-  catch(error){
-    console.log("unable to connect to db: ", error)
-  }
 })
